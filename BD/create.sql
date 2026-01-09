@@ -232,19 +232,32 @@ CREATE TABLE Ra (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE Comp_Ra (
-  ID      INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  ID_Comp INT UNSIGNED NOT NULL,
-  ID_Ra   INT UNSIGNED NOT NULL,
+  ID            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  ID_Comp       INT UNSIGNED NOT NULL,
+  ID_Ra         INT UNSIGNED NOT NULL,
+  ID_Asignatura INT UNSIGNED NOT NULL,
   PRIMARY KEY (ID),
+
   KEY ix_comp_ra_id_comp (ID_Comp),
   KEY ix_comp_ra_id_ra (ID_Ra),
+  KEY ix_comp_ra_id_asignatura (ID_Asignatura),
+
+  -- Evita duplicar el mismo mapeo dentro de la misma asignatura
+  UNIQUE KEY uq_comp_ra_asig_comp_ra (ID_Asignatura, ID_Comp, ID_Ra),
+
   CONSTRAINT fk_comp_ra_id_comp
     FOREIGN KEY (ID_Comp) REFERENCES Competencia(ID)
     ON UPDATE CASCADE ON DELETE CASCADE,
+
   CONSTRAINT fk_comp_ra_id_ra
     FOREIGN KEY (ID_Ra) REFERENCES Ra(ID)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+
+  CONSTRAINT fk_comp_ra_id_asignatura
+    FOREIGN KEY (ID_Asignatura) REFERENCES Asignatura(ID)
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE Nota_Competencia (
   ID             INT UNSIGNED NOT NULL AUTO_INCREMENT,
