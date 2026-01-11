@@ -13,21 +13,12 @@ return new class extends Migration {
                     $table->time('Hora');
                     $table->string('Accion_seguimiento', 150);
                     $table->text('Seguimiento_actividad');
-                    $table->unsignedBigInteger('ID_Tutor')->nullable();
-                    $table->unsignedBigInteger('ID_Instructor')->nullable();
 
                     $table->foreign('ID_Estancia')
                         ->references('id')->on('estancia_alumno')
                         ->cascadeOnDelete()
                         ->cascadeOnUpdate();
-                    $table->foreign('ID_Tutor')
-                        ->references('id_usuario')->on('tutor')
-                        ->nullOnDelete()
-                        ->cascadeOnUpdate();
-                    $table->foreign('ID_Instructor')
-                        ->references('id_usuario')->on('instructor')
-                        ->nullOnDelete()
-                        ->cascadeOnUpdate();
+  
                 });
     }
 

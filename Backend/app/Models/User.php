@@ -18,10 +18,15 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    public $incrementing = false;
     protected $fillable = [
+        'id',
         'nombre',
+        'apellidos',
         'email',
-        'contrasenna',
+        'n_tel',
+        'password',
+        'tipo',
     ];
 
     /**
@@ -61,4 +66,5 @@ class User extends Authenticatable
             $user->id = $lastNumber ? $lastNumber +1 : $start +1;
         });
     }
+
 }

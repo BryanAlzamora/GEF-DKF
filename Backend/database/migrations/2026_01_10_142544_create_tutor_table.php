@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
         Schema::create('tutor', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_usuario')->primary();
-            $table->foreign('id_usuario')
+            $table->unsignedBigInteger('ID_Usuario')->primary();
+            $table->foreign('ID_Usuario')
                 ->references('id')->on('users')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

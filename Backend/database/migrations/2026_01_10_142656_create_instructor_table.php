@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
         Schema::create('instructor', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_usuario')->primary();
+            $table->unsignedBigInteger('ID_Usuario')->primary();
             $table->string('CIF_Empresa', 15);
             $table->foreign('id_usuario')
                 ->references('id')->on('users')
