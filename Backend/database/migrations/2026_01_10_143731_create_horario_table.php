@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('Dias',20);
             $table->string('Horario1',20);
             $table->string('Horario2',20);
+            $table->timestamps();
 
             $table->foreign('ID_Estancia')
                 ->references('id')->on('estancia_alumno')

@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('ID_Transversal');
             $table->unsignedBigInteger('ID_Alumno');
             $table->float('Nota',52);
+            $table->timestamps();
 
             $table->foreign('ID_Transversal')
                 ->references('id')->on('transversales')

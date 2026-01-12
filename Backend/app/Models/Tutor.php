@@ -8,7 +8,6 @@ class Tutor extends Model
 {
     protected $table = "tutor";
     protected $primary="ID_Usuario";
-    protected $incrementing=false;
     protected function tutor(){
         return $this->belongsTo(User::class,"ID_Usuario","ID");
     }

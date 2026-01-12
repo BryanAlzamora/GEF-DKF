@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +24,7 @@ class UserController extends Controller
             'user' => $user
         ]);
     }
-    //
+
     public function login(Request $req)
     {
         $credentials = $req->validate([
@@ -57,5 +57,16 @@ class UserController extends Controller
             'status' => 'success',
             'message' => 'Sesión cerrada correctamente'
         ], 200);
+    }
+
+    public function getUsers(Request $req)
+    {
+        $perPage = $req->get('per_page', 5); // Valor por defecto 10
+        $usuarios = User::orderBy('id')->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $usuarios
+        ]);
     }
 }

@@ -8,7 +8,6 @@ class Competencia extends Model
 {
     protected $table="competencia";
     protected $primary="ID";
-    protected $incrementing=false;
     protected $fillable=[
         "Descripcion"
     ];

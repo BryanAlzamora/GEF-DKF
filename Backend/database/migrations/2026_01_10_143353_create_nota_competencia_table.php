@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('ID_Competencia');
             $table->unsignedBigInteger('ID_Alumno');
             $table->float('Nota',52);
+            $table->timestamps();
 
             $table->foreign('ID_Competencia')
                 ->references('id')->on('competencia')

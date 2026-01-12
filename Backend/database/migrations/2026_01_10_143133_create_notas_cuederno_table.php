@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('ID_Tutor');
             $table->date('Fecha');
             $table->float('Nota', 52);
+            $table->timestamps();
 
             $table->foreign('ID_Cuaderno')
                 ->references('id')->on('entrega_cuaderno')

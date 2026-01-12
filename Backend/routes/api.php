@@ -8,4 +8,4 @@ Route::get('/user', [UserController::class, 'getUser'])->middleware('auth:sanctu
 
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
-
+Route::get('/users',[UserController::class,'getUsers']);

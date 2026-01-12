@@ -10,6 +10,8 @@ return new class extends Migration {
                     $table->id();
                     $table->string('nombre', 150);
                     $table->unsignedBigInteger('ID_Grado');
+                                $table->timestamps();
+
                     $table->foreign('ID_Grado')
                         ->references('id')->on('grado')
                         ->cascadeOnDelete()

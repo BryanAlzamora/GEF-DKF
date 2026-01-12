@@ -10,6 +10,8 @@ Schema::create('tutor_instructor', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('ID_Tutor');
             $table->unsignedBigInteger('ID_Instructor');
+                        $table->timestamps();
+
             $table->foreign('ID_Tutor')
                 ->references('id_usuario')->on('tutor')
                 ->cascadeOnDelete()

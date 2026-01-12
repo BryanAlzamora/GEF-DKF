@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light  shadow-sm">
         <div class="container-fluid">
 
             <!-- Logo -->
@@ -22,7 +22,7 @@
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title">
-                        ¡Bienvenido, {{ usuario }}!
+                        ¡Bienvenid@, {{ usuario.nombre }}!
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
@@ -30,7 +30,10 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Servicios</a>
+                            <RouterLink to="/home"><a class="nav-link">Inicio</a></RouterLink>
+                        </li>
+                        <li class="nav-item" v-if="usuario.tipo === 'admin'">
+                            <RouterLink to="/users"><a class="nav-link">Usuarios</a></RouterLink>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Sobre nosotros</a>
@@ -65,12 +68,12 @@
     import axios from 'axios';
     import { ref } from 'vue';
     import { useRouter } from 'vue-router';
-
+    import { RouterLink } from 'vue-router';
     const router = useRouter();
     const userStore = useUserStore()
 
     let message = ref()
-    let usuario = userStore.user.nombre + " " + userStore.user.apellidos
+    let usuario = userStore.user
 
     async function logout() {
         const token = localStorage.getItem('token')

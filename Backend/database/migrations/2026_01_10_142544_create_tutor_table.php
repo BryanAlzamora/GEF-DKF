@@ -8,6 +8,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('tutor', function (Blueprint $table) {
             $table->unsignedBigInteger('ID_Usuario')->primary();
+            $table->timestamps();
             $table->foreign('ID_Usuario')
                 ->references('id')->on('users')
                 ->cascadeOnDelete()

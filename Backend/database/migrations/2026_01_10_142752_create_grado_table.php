@@ -10,6 +10,8 @@ return new class extends Migration {
             $table->id();
             $table->string('nombre', 150);
             $table->string('curso', 50)->nullable();
+                        $table->timestamps();
+
             $table->unsignedBigInteger('id_tutor')->nullable();
             $table->foreign('id_tutor')
                 ->references('id_usuario')->on('tutor')

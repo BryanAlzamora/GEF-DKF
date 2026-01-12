@@ -11,6 +11,7 @@ Schema::create('alumno', function (Blueprint $table) {
             $table->unsignedBigInteger('ID_Grado')->nullable();
             $table->unsignedBigInteger('ID_Tutor')->nullable();
             $table->unsignedBigInteger('ID_Instructor')->nullable();
+            $table->timestamps();
 
             $table->foreign('ID_Usuario')
                 ->references('id')->on('users')

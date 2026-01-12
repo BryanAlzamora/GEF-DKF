@@ -13,12 +13,13 @@ return new class extends Migration {
                     $table->time('Hora');
                     $table->string('Accion_seguimiento', 150);
                     $table->text('Seguimiento_actividad');
+            $table->timestamps();
 
                     $table->foreign('ID_Estancia')
                         ->references('id')->on('estancia_alumno')
                         ->cascadeOnDelete()
                         ->cascadeOnUpdate();
-  
+
                 });
     }
 

@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('ID_Asignatura');
             $table->unsignedBigInteger('ID_Alumno');
             $table->decimal('nota',4,2);
+            $table->timestamps();
 
             $table->foreign('ID_Asignatura')
                 ->references('id')->on('asignatura')

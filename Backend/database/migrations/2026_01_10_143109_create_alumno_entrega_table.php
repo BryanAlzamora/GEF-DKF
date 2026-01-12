@@ -12,6 +12,8 @@ return new class extends Migration {
             $table->date('Fecha_Entrega');
             $table->unsignedBigInteger('ID_Alumno');
             $table->unsignedBigInteger('ID_Entrega');
+                        $table->timestamps();
+
             $table->foreign('ID_Alumno')
                 ->references('id_usuario')->on('alumno')
                 ->cascadeOnDelete()

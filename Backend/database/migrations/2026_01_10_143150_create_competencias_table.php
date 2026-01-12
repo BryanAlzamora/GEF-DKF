@@ -9,6 +9,8 @@ return new class extends Migration {
         Schema::create('competencia', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion', 255);
+                        $table->timestamps();
+
         });
     }
 
