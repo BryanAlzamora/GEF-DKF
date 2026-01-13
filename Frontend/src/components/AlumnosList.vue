@@ -35,13 +35,9 @@ async function fetchAlumnos(page = 1) {
   totalPages.value = paginator.last_page || 1;
 }
 
+//Cuando el componente se cargue se va a la primera pagina
 onMounted(() => fetchAlumnos(1));
 
-// si cambia el endpoint (cambias de tutor a instructor), recarga
-watch(
-  () => props.endpoint,
-  () => fetchAlumnos(1)
-);
 </script>
 
 <template>

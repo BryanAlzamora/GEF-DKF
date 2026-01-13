@@ -172,11 +172,8 @@ async function logout() {
         console.error(error);
         message.value = 'Error cerrando sesión';
     }
-  } catch (error) {
-    console.error(error);
-    message.value = "Error cerrando sesión";
-  }
-};
+  } 
+
 </script>
 
 <style lang="scss" scoped></style>
