@@ -126,7 +126,6 @@ const userStore = useUserStore()
 
 let message = ref()
 let usuario = userStore.user
-let currentPath = 
 async function logout() {
     const token = localStorage.getItem('token')
     try {

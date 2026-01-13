@@ -42,8 +42,7 @@ const router = createRouter({
       path: '/alumnosTutor/asignarEmpresa',
       name: 'asignarEmpresa',
       component: AsignarEmpresaView
-    }
-    
+    },
     {
       path: '/empresa',
       name: 'empresa',
