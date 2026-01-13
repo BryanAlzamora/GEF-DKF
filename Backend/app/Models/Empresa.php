@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Empresa extends Model
 {
     protected $primaryKey = 'CIF';
+    protected $keyType = 'string';
+    public $incrementing = false;
     protected $table = 'empresa';
     protected $fillable = [
         'CIF',

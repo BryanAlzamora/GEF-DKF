@@ -83,4 +83,7 @@ onBeforeMount(async () => {
 .carga li:nth-child(4) { animation-delay: 0.3s; }
 .carga li:nth-child(5) { animation-delay: 0.4s; }
 
+li{
+  cursor: pointer;
+}
 </style>

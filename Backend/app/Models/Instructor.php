@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Instructor extends Model
 {
     protected $table = "instructor";
-    protected $primary="ID_Usuario";
-
-    public function instructor(){
-        return $this->belongsTo(User::class,"ID_Usuario","ID");
+    protected $primaryKey="ID_Usuario";
+    protected $fillable = [
+        'ID_Usuario',
+        'CIF_Empresa'
+    ];
+    public function user(){
+        return $this->belongsTo(User::class,"ID_Usuario","id");
     }
     public function tutores(){
         return $this->belongsToMany(Tutor::class,"tutor_instructor","ID_Instructor","ID_Tutor");
