@@ -4,6 +4,7 @@
 use App\Http\Controllers\Empresa;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\AlumnoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 Route::get('/auth', [UserController::class, 'auth'])->middleware('auth:sanctum');
@@ -14,3 +15,5 @@ Route::get('/users',[UserController::class,'getUsers']);
 Route::get('/empresas',[EmpresaController::class,'getCompanys']);
 Route::get('/empresa/{cif}/instructores', [InstructorController::class, 'getCompanyInstructor']);
 Route::post('/empresa/instructor/create',[InstructorController::class,'crearInstructor']);
+Route::get('/tutores/{id}/alumnos', [AlumnoController::class, 'alumnosDeTutor']);
+Route::get('/instructores/{id}/alumnos', [AlumnoController::class, 'alumnosDeInstructor']);
