@@ -9,8 +9,9 @@ const alumnoId = userStore.user.id;
 
 async function fetchEstancia() {
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/alumno/${alumnoId}/estancia`);
+    const response = await axios.get(`http://localhost:8000/api/alumno/${alumnoId}/estancia`);
     estancia.value = response.data;
+    console.log(estancia.value);
   } catch (error) {
     console.error(error);
   }
@@ -38,19 +39,41 @@ onMounted(() => {
       <tbody>
         <tr>
           <td>{{ estancia.empresa?.Nombre }}</td>
-          <td>{{ estancia.alumno?.instructor?.usuario?.Nombre }} {{ estancia.alumno?.instructor?.usuario?.Apellidos }}</td>
-          <td>{{ estancia.alumno?.tutor?.usuario?.Nombre }} {{ estancia.alumno?.tutor?.usuario?.Apellidos }}</td>
+
+          <td>
+            {{ estancia.alumno?.instructor?.user?.nombre }}
+            {{ estancia.alumno?.instructor?.user?.apellidos }}
+          </td>
+
+          <td>
+            {{ estancia.alumno?.tutor?.user?.nombre }}
+            {{ estancia.alumno?.tutor?.user?.apellidos }}
+          </td>
+
           <td>{{ estancia.Fecha_inicio }}</td>
           <td>{{ estancia.Fecha_fin ?? '—' }}</td>
+
           <td>
-            <div v-for="h in estancia.horario" :key="h.ID">
-              {{ h.Dias }} {{ h.Horario1 }} {{ h.Horario2 }}
+            <div class="d-flex flex-column gap-2">
+              <div v-for="h in estancia.horario" :key="h.id" class="border rounded p-2">
+                <div class="fw-bold text-primary">
+                  {{ h.Dias }}
+                </div>
+                <div>
+                  <span class="badge bg-success me-1">{{ h.Horario1 }}</span>
+                  <span v-if="h.Horario2" class="badge bg-success">
+                    {{ h.Horario2 }}
+                  </span>
+                </div>
+              </div>
             </div>
           </td>
+
         </tr>
       </tbody>
     </table>
   </div>
+
   <div v-else>
     No hay estancia registrada.
   </div>

@@ -8,6 +8,5 @@ class TutorGrado extends Model
 {
     protected $table = "tutor_grado";
     protected $primary="ID";
-    protected $incrementing=false;
 
 }

@@ -18,7 +18,7 @@ class Alumno extends Model
     ];
 
     public function usuario(){
-        return $this->belongsTo(User::class, 'ID_Usuario');
+        return $this->belongsTo(User::class, 'ID_Usuario','id');
     }
 
     public function grado(){
@@ -41,7 +41,7 @@ class Alumno extends Model
         return $this->hasMany(NotaTransversal::class, 'ID_Alumno','ID_Usuario');
     }
 
-    
+
     public function estanciaAlumno(){
         return $this-> hasOne(EstanciaAlumno::class, 'ID_Alumno', 'ID_Usuario');
     }

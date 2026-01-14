@@ -15,8 +15,8 @@ class Instructor extends Model
     public function user(){
         return $this->belongsTo(User::class,"ID_Usuario","id");
     }
-    public function instructor(){
-        return $this->belongsTo(User::class,"ID_Usuario","ID");
+    public function alumno(){
+        return $this->belongsTo(Alumno::class,"ID_Usuario","ID");
     }
     public function tutores(){
         return $this->belongsToMany(Tutor::class,"tutor_instructor","ID_Instructor","ID_Tutor");

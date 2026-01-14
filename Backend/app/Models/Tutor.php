@@ -9,14 +9,14 @@ class Tutor extends Model
     protected $table = "tutor";
     protected $primaryKey="ID_Usuario";
 
-    protected function tutor(){
-        return $this->belongsTo(User::class,"ID_Usuario","ID");
+    public function user(){
+        return $this->belongsTo(User::class,"ID_Usuario","id");
     }
 
-    protected function grados(){
+    public function grados(){
         return $this->belongsToMany(Grado::class,"tutor_grado","ID_Tutor","ID_Grado");
     }
-    protected function instructores(){
+    public function instructores(){
         return $this->belongsToMany(Instructor::class,"tutor_instructor","ID_Tutor","ID_Instructor");
     }
 

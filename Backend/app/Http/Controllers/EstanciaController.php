@@ -10,20 +10,26 @@ class EstanciaController extends Controller
         $estancias = EstanciaAlumno::all();
         return response()->json($estancias);
     }
-    
+
     // Obtener la estancia del alumno
     public function getEstanciaAlumno($idAlumno)
-    {
-        $estancia = EstanciaAlumno::with([
-            'empresa',
-            'horario',
-            'alumno.tutor.usuario',
-            'alumno.instructor.usuario'
-        ])->where('ID_Alumno', $idAlumno)
-            ->get(); 
+        {
+            $estancia = EstanciaAlumno::with([
+                'empresa',
+                'horario',
+                'alumno.usuario',
+                'alumno.tutor.user',
+                'alumno.instructor.user'
+            ])->where('ID_Alumno', $idAlumno)
+            ->first();
 
-        return response()->json($estancia);
-    }
+            if (!$estancia) {
+                return response()->json(['message' => 'Estancia no encontrada'], 404);
+            }
+
+            return response()->json($estancia);
+        }
+
     public function getCompanyAlumnos($CIF){
         $estanciasEmpresa = EstanciaAlumno::with(['alumno.usuario','alumno.instructor.user'])->where('CIF_Empresa', $CIF)->get();
         return response()->json($estanciasEmpresa);

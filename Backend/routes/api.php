@@ -1,14 +1,12 @@
 
 <?php
 
-use App\Http\Controller\EstanciaController;
-use App\Http\Controllers\Empresa;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AlumnoController;
+use App\Http\Controllers\EstanciaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Models\EstanciaAlumno;
 
 Route::get('/auth', [UserController::class, 'auth'])->middleware('auth:sanctum');
 
