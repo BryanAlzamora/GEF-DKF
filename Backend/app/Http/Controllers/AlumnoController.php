@@ -74,4 +74,9 @@ class AlumnoController extends Controller
             'data' => $alumnos
         ]);
     }
+    public function getGrado($id)
+    {
+        return Alumno::with('grado')->findOrFail($id);
+    }
+
 }
