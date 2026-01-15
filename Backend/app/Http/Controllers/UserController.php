@@ -24,7 +24,8 @@ class UserController extends Controller
             'user' => $userAuth
         ]);
     }
-    public function getUser($id){
+    public function getUser($id)
+    {
         return User::find($id);
     }
 
@@ -65,27 +66,81 @@ class UserController extends Controller
     }
 
     public function getUsers(Request $req)
-        {
-            $perPage = $req->get('per_page', 5);
+    {
+        $perPage = $req->get('per_page', 5);
 
-            $query = User::query()->orderBy('id');
+        $query = User::query()->orderBy('id');
 
-            if ($req->filled('tipo')) {
-                $query->where('tipo', $req->tipo);
-            }
-
-            if ($req->filled('id_grado')) {
-                $query->whereHas('alumno', function ($q) use ($req) {
-                    $q->where('ID_Grado', $req->id_grado);
-                });
-            }
-
-            $usuarios = $query->paginate($perPage);
-
-            return response()->json([
-                'status' => 'success',
-                'data' => $usuarios
-            ]);
+        if ($req->filled('tipo')) {
+            $query->where('tipo', $req->tipo);
         }
 
+        if ($req->filled('id_grado')) {
+            $query->whereHas('alumno', function ($q) use ($req) {
+                $q->where('ID_Grado', $req->id_grado);
+            });
+        }
+
+        $usuarios = $query->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $usuarios
+        ]);
+    }
+
+    public function create(Request $req)
+    {
+        $data = $req->validate([
+            'nombre' => 'required|string|max:255',
+            'apellidos' => 'nullable|string|max:255',
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'n_tel' => ['nullable', 'string', 'regex:/^[0-9]{9}$/', 'unique:users,n_tel'],
+            'password' => 'required|string|min:6',
+            'tipo' => 'required|string|in:alumno,tutor,instructor,admin',
+            'id_grado' => 'nullable|exists:grado,id', // solo para alumno
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.max' => 'El nombre no puede superar los 255 caracteres.',
+            'apellidos.max' => 'Los apellidos no pueden superar los 255 caracteres.',
+            'email.required' => 'El email es obligatorio.',
+            'email.email' => 'Debes introducir un email válido.',
+            'email.unique' => 'Este email ya está registrado.',
+            'n_tel.regex' => 'El número de teléfono debe tener exactamente 9 dígitos.',
+            'n_tel.unique' => 'Este número de teléfono ya está registrado.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
+            'tipo.required' => 'Debes especificar el tipo de usuario.',
+            'tipo.in' => 'Tipo de usuario inválido.',
+            'id_grado.exists' => 'El grado seleccionado no existe.',
+        ]);
+
+        // Creamos el usuario
+        $user = User::create([
+            'nombre' => $data['nombre'],
+            'apellidos' => $data['apellidos'] ?? null,
+            'email' => $data['email'],
+            'n_tel' => $data['n_tel'] ?? null,
+            'password' => $data['password'],
+            'tipo' => $data['tipo'],
+        ]);
+
+        if ($req->tipo === "alumno" && isset($data['id_grado'])) {
+            // Cargar la relación alumno del usuario recién creado
+            $user->load('alumno');
+
+            $alumno = $user->alumno;
+
+            if ($alumno) {
+                $alumno->ID_Grado = $data['id_grado']; // asignar el grado
+                $alumno->save(); // guardar cambios
+            }
+        }
+
+
+        return response()->json([
+            'message' => "{$data['tipo']} creado correctamente",
+            'usuario' => $user,
+        ], 201);
+    }
 }

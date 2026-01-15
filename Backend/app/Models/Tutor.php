@@ -8,6 +8,7 @@ class Tutor extends Model
 {
     protected $table = "tutor";
     protected $primaryKey="ID_Usuario";
+    protected $fillable = ['ID_Usuario'];
 
     public function user(){
         return $this->belongsTo(User::class,"ID_Usuario","id");

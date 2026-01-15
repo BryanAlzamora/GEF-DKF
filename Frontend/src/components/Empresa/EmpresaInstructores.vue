@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios'
 import { ref, watch } from 'vue'
-import ModalInstructor from '../Instructor/FormularioInstructor.vue'
+import FormularioUsuario from '../FormularioUsuario.vue'
 
 const props = defineProps({ empresa: Object })
 
@@ -37,7 +37,7 @@ watch(
     { immediate: true }
 )
 
-async function crearInstructor(instructorData) {
+async function crearUsuario(instructorData) {
     try {
         const response = await axios.post('http://localhost:8000/api/empresa/instructor/create', {
             ...instructorData,
@@ -97,8 +97,9 @@ async function crearInstructor(instructorData) {
                         <td colspan="3" class="text-center text-muted">No hay instructores</td>
                     </tr>
                 </tbody>
+                
             </table>
         </div>
     </div>
-    <ModalInstructor :show="showModal" :errorMessage="errorMessage" @close="showModal=false, errorMessage = null" @crear="crearInstructor" />
+    <FormularioUsuario :show="showModal" :errorMessage="errorMessage" :tipo="'Instructor'" @close="showModal=false, errorMessage = null" @crear="crearUsuario" />
 </template>

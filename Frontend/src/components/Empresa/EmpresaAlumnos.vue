@@ -1,7 +1,6 @@
 <script setup>
 import axios from 'axios'
 import { ref, watch } from 'vue'
-import ModalInstructor from '../Instructor/FormularioInstructor.vue'
 
 const props = defineProps({ empresa: Object })
 
