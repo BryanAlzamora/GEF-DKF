@@ -123,9 +123,4 @@ class AlumnoController extends Controller
         return response()->json($alumno);
     }
 
-
-
-
-
-
 }
