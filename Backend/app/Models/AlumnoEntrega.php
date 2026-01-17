@@ -23,10 +23,15 @@ class AlumnoEntrega extends Model
 
     public function entrega()
     {
-        return $this->belongsTo(EntregaCuaderno::class,'ID_Entrega','ID');
+        return $this->belongsTo(EntregaCuaderno::class,'ID_Entrega','id');
     }
     public function nota()
-    {
-        return $this->hasOne(NotaCuaderno::class, 'ID_Cuaderno','id');
-    }
+{
+    return $this->hasOne(
+        NotaCuaderno::class,
+        'ID_Cuaderno',
+        'id'
+    );
+}
+
 }

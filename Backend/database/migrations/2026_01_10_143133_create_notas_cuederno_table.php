@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->timestamps();
 
             $table->foreign('ID_Cuaderno')
-                ->references('id')->on('entrega_cuaderno')
+                ->references('id')->on('alumno_entrega')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->foreign('ID_Tutor')
