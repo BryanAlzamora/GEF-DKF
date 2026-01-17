@@ -99,7 +99,7 @@ class AlumnoController extends Controller
 
     public function misNotas($id)
     {
-        
+
 
         if (!$id) {
             return response()->json([
@@ -117,8 +117,10 @@ class AlumnoController extends Controller
             'notasCompetencias.competencia',
             'notasTransversales.transversal',
             'notasEgibide.asignatura',
-            'entregas.alumnoEntrega.nota'
-        ])->where('ID_Usuario',$id)->get();
+            'cuadernos.entrega',
+            'cuadernos.nota'
+        ])->where('ID_Usuario', $id)->first();
+
 
         return response()->json($alumno);
     }

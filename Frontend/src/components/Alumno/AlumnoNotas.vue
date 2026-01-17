@@ -19,7 +19,9 @@ async function cargarNotas() {
     const res = await axios.get(`http://localhost:8000/api/alumno/${id}/mis-notas`, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    notas.value = res.data[0] || null
+    notas.value = res.data || null
+    console.log(notas.value);
+    
   } catch (err) {
     console.error(err)
     mensaje.value = 'Error al cargar las notas'
@@ -41,7 +43,7 @@ onMounted(cargarNotas)
         <p class="mb-0"><strong>Grado:</strong> {{ notas.grado.nombre }}</p>
       </div>
 
-      <CuardernosTable :entregas="notas.entregas" :alumno-id="id" />
+      <CuardernosTable :cuadernos="notas.cuadernos" :alumno-id="id" />
       <CompetenciasTable :competencias="notas.notas_competencias" />
       <TransversalesTable :transversales="notas.notas_transversales" />
       <EgibideTable :egibide="notas.notas_egibide" />
