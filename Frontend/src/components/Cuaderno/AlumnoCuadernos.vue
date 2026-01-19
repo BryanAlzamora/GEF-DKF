@@ -74,7 +74,6 @@ onMounted(fetchEntregas)
 
 <template>
   <div>
-  
     <div v-if="mensaje" class="alert alert-danger">
       {{ mensaje }}
     </div>
@@ -87,7 +86,7 @@ onMounted(fetchEntregas)
       <div v-for="entrega in entregas" :key="entrega.id" class="col-md-6 mb-3">
         <div class="card shadow-sm h-100">
           <div class="card-body">
-            <h5 class="card-title">Entrega {{ entrega.id }}</h5>
+            <h5 class="card-title">{{ entrega.Descripcion }}</h5>
             <p class="card-subtitle mb-2 text-muted">Fecha límite: {{ entrega.Fecha_Limite }}</p>
 
             <!-- Badge estado -->

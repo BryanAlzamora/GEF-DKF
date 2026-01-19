@@ -13,26 +13,19 @@ async function fetchEntregas() {
   if (!tutorId) return
 
   try {
-    // Obtener los grados que tutorea
-    const gradosResponse = await axios.get(`http://localhost:8000/api/tutor/${tutorId}/grados`)
-    const grados = gradosResponse.data
+    const gradosResponse = await axios.get(
+      `http://localhost:8000/api/tutor/${tutorId}/grados`
+    )
 
     entregas.value = []
 
-    // Obtener entregas de cada grado
-    for (const grado of grados) {
-      const resResponse = await axios.get(`http://localhost:8000/api/grado/${grado.id}/entregas`)
-      const res = resResponse.data
+    for (const grado of gradosResponse.data) {
+      const resResponse = await axios.get(
+        `http://localhost:8000/api/grado/${grado.id}/entregas`
+      )
 
-      // Mapear alumno_entrega a alumnoEntrega
-      res.forEach(function(e) {
-        e.alumnoEntrega = e.alumno_entrega || []
-        e.alumnoEntrega.forEach(a => {
-          if (!a.nota) a.nota = { Nota: 0 }
-        })
-      })
+      entregas.value.push(...resResponse.data)
 
-      entregas.value.push(...res)
     }
   } catch (err) {
     console.error(err)
@@ -40,19 +33,20 @@ async function fetchEntregas() {
   }
 }
 
-async function guardarNota(alumnoEntrega) {
+async function guardarNota(alumnoEntrega) {    
   try {
-    await axios.post('http://localhost:8000/api/nota-cuaderno', {
-      ID_Cuaderno: alumnoEntrega.ID_Entrega,
-      Nota: alumnoEntrega.nota?.Nota || 0,
-      ID_Tutor: tutorId
+    const res = await axios.post('http://localhost:8000/api/nota-cuaderno', {
+      ID_Cuaderno: alumnoEntrega.id,
+      Nota: Number(alumnoEntrega.nota?.Nota ?? 0),
+      ID_Tutor: alumnoEntrega.alumno.ID_Tutor
     })
-    alert('Nota guardada correctamente')
+    
   } catch (err) {
     console.error(err)
     alert('Error al guardar la nota')
   }
 }
+
 
 onMounted(fetchEntregas)
 </script>
@@ -60,51 +54,80 @@ onMounted(fetchEntregas)
 <template>
   <div>
     <h3>Cuadernos de Alumnos</h3>
-    <div v-if="mensaje" class="text-danger mb-3">{{ mensaje }}</div>
+
+    <div v-if="mensaje" class="text-danger mb-3">
+      {{ mensaje }}
+    </div>
 
     <div v-if="entregas.length">
       <div v-for="entrega in entregas" :key="entrega.id" class="card mb-4 shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <!-- HEADER -->
+        <div class="card-header bg-indigo d-flex justify-content-between align-items-center">
           <div>
-            <strong>Entrega ID: {{ entrega.id }}</strong>
-            <span class="text-muted ms-3">Fecha límite: {{ entrega.Fecha_Limite }}</span>
+            <h5 class="text-white mb-1">
+              {{ entrega.Descripcion }}
+            </h5>
+            <small class="text-white">
+              Fecha límite: {{ entrega.Fecha_Limite }}
+            </small>
           </div>
-          <div>
-            <span class="badge bg-success" v-if="entrega.alumnoEntrega.length">Entregas realizadas: {{ entrega.alumnoEntrega.length }}</span>
-            <span class="badge bg-danger" v-else>No hay entregas</span>
-          </div>
+
+          <span class="badge" :class="entrega.alumno_entrega.length ? 'bg-success' : 'bg-danger'">
+            {{ entrega.alumno_entrega.length
+              ? `Entregas: ${entrega.alumno_entrega.length}`
+              : 'Sin entregas' }}
+          </span>
         </div>
 
-        <div class="card-body p-0">
-          <table class="table table-striped mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>Alumno</th>
-                <th>PDF</th>
-                <th>Nota</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="alumnoEntrega in entrega.alumnoEntrega" :key="alumnoEntrega.id">
-                <td>{{ alumnoEntrega.alumno?.usuario?.nombre ?? '—' }}</td>
-                <td>
-                  <a v-if="alumnoEntrega.URL_Cuaderno" :href="`http://localhost:8000/api/alumno/entregas/descargar/${alumnoEntrega.id}`" target="_blank">
-                    Descargar PDF
-                  </a>
-                  <span v-else class="text-danger">No entregado</span>
-                </td>
-                <td class="d-flex align-items-center gap-2">
-                  <input v-model.number="alumnoEntrega.nota.Nota" type="number" min="0" max="10" class="form-control form-control-sm w-25" />
-                  <button @click="guardarNota(alumnoEntrega)" class="btn btn-success btn-sm">Guardar</button>
-                </td>
-              </tr>
+        <!-- BODY -->
+        <div class="card-body pb-2">
+          <div class="table-responsive">
+            <table class="table table-striped mb-0 align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Alumno</th>
+                  <th>PDF</th>
+                  <th class="text-center">Nota</th>
+                </tr>
+              </thead>
 
-              <!-- Si no hay alumnos entregados -->
-              <tr v-if="entrega.alumnoEntrega.length === 0">
-                <td colspan="3" class="text-center text-muted">Ningún alumno ha entregado este cuaderno</td>
-              </tr>
-            </tbody>
-          </table>
+              <tbody>
+                <tr v-for="alumnoEntrega in entrega.alumno_entrega" :key="alumnoEntrega.id">
+                  <td>
+                    {{ alumnoEntrega.alumno?.usuario?.nombre ?? '—' }}
+                  </td>
+
+                  <td>
+                    <a v-if="alumnoEntrega.URL_Cuaderno"
+                      :href="`http://localhost:8000/api/alumno/entregas/descargar/${alumnoEntrega.id}`" target="_blank"
+                      class="link-primary">
+                      Descargar PDF
+                    </a>
+                    <span v-else class="text-danger">
+                      No entregado
+                    </span>
+                  </td>
+
+                  <td class="text-center">
+                    <div class="d-flex justify-content-center gap-2">
+                      <input type="number" min="0" max="10" class="form-control form-control-sm w-50"
+                        :value="alumnoEntrega.nota?.Nota ?? ''"
+                        @input="alumnoEntrega.nota = { Nota: $event.target.value }" />
+                      <button @click="guardarNota(alumnoEntrega)" class="btn btn-outline-secondary btn-sm">
+                        Guardar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr v-if="entrega.alumno_entrega.length === 0">
+                  <td colspan="3" class="text-center text-muted py-3">
+                    Ningún alumno ha entregado este cuaderno
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -114,4 +137,3 @@ onMounted(fetchEntregas)
     </div>
   </div>
 </template>
-

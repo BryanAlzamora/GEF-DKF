@@ -1,30 +1,30 @@
 <script setup>
-    import axios from "axios";
-    import { ref, watch, onMounted } from "vue";
-  import UserCreationButtons from "./UserCreationButtons.vue";
-    const emit = defineEmits(["change"]);
+import axios from "axios";
+import { ref, watch, onMounted } from "vue";
+import UserCreationButtons from "./UserCreationButtons.vue";
+const emit = defineEmits(["change"]);
 
-    const tipo = ref("NONE");
-    const grado = ref("NONE");
-    const grados = ref([]);
-    async function cargarGrados() {
-      try {
-          const response = await axios.get("http://localhost:8000/api/grados");
-          grados.value = response.data;
-      } catch (e) {
-          console.error(e);
-      }
-    }
+const tipo = ref("NONE");
+const grado = ref("NONE");
+const grados = ref([]);
+async function cargarGrados() {
+  try {
+    const response = await axios.get("http://localhost:8000/api/grados");
+    grados.value = response.data.data;
+  } catch (e) {
+    console.error(e);
+  }
+}
 
-    onMounted(() => {
-    cargarGrados();
-    });
+onMounted(() => {
+  cargarGrados();
+});
 
-    watch([tipo, grado], () => {
-    emit("change", {
-      tipo: tipo.value,
-      id_grado: grado.value
-    });
+watch([tipo, grado], () => {
+  emit("change", {
+    tipo: tipo.value,
+    id_grado: grado.value
+  });
 });
 
 
@@ -53,7 +53,7 @@
         <select v-model="grado" class="form-select">
           <option value="NONE">Selecciona un grado</option>
           <option value=".">Todos</option>
-          <option v-for="g in grados" :key="g" :value="g.id">
+          <option  v-for="g in grados" :key="g.id" :value="g.id">
             {{ g.nombre }}
           </option>
         </select>

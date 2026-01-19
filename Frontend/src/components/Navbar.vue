@@ -10,9 +10,7 @@
         />
       </RouterLink>
       <!-- Bienvenida (desktop, derecha) -->
-      <span class="d-none d-lg-block ms-lg-auto me-3 fw-semibold">
-        ¡Bienvenid@, {{ usuario.nombre }}!
-      </span>
+      
 
       <!-- Hamburguesa -->
       <button
@@ -28,7 +26,6 @@
       <!-- Offcanvas -->
       <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title">¡Bienvenid@, {{ usuario.nombre }}!</h5>
           <button
             type="button"
             class="btn-close"
@@ -123,9 +120,9 @@
                 Mis Cuadernos
               </RouterLink>
             </li>
-            <li>
+            <li v-if="usuario.tipo ==='alumno'">
               <RouterLink class="nav-link" to="/alumno/mis-notas">
-                Mis notas
+                Mis Notas
               </RouterLink>
             </li>
             <li class="nav-item">
@@ -185,4 +182,4 @@ async function logout() {
 
 </script>
 
-<style lang="scss" scoped></style>
+

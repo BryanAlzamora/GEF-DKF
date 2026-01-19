@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->date('Fecha_Limite');
             $table->unsignedBigInteger('ID_Grado');
                         $table->timestamps();
-
+            $table->string('Descripcion');
             $table->foreign('ID_Grado')
                 ->references('id')->on('grado')
                 ->cascadeOnDelete()
