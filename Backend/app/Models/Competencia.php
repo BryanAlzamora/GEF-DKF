@@ -8,7 +8,8 @@ class Competencia extends Model
 {
     protected $table="competencia";
     protected $fillable=[
-        "Descripcion"
+        "descripcion",
+        "ID_Grado"
     ];
 
     public function compRa(){
@@ -16,6 +17,9 @@ class Competencia extends Model
     }
     public function notasCompentencias(){
         return $this->hasMany(NotaCompetencia::class,"ID_Compentencia");
+    }
+    public function grado(){
+        return $this-> belongsTo(Grado::class, "ID_Grado");
     }
 
 }

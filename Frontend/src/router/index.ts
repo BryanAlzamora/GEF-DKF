@@ -14,13 +14,10 @@ import AlumnoCuadernosView from '@/views/cuadernos/AlumnoCuadernosView.vue';
 import TutorCuadernosView from '@/views/cuadernos/TutorCuadernosView.vue';
 
 import AlumnoNotasView from '@/views/alumno/AlumnoNotasView.vue'
-<<<<<<< HEAD
-import GradosTable from '@/components/GradosTable.vue'
 import CompRaView from '@/views/CompRaView.vue'
-=======
+
 import GradosView from '@/views/GradosView.vue'
 
->>>>>>> 10bbec08d18a0ca5f7d76e4fe0ca3cd3f97ba4ff
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -94,20 +91,14 @@ const router = createRouter({
     {
       path: "/grados",
       name: "grados",
-<<<<<<< HEAD
-      component: GradosTable
+      component: GradosView
     },
     {
       path: "/competenciasXra",
       name: "compra",
       component: CompRaView
-=======
-      component: GradosView
->>>>>>> 10bbec08d18a0ca5f7d76e4fe0ca3cd3f97ba4ff
     }
-
-
-
+  
   ],
 })
 
