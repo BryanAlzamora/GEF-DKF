@@ -12,7 +12,9 @@ class AlumnoEntrega extends Model
         'URL_Cuaderno',
         'Fecha_Entrega',
         'ID_Alumno',
-        'ID_Entrega'
+        'ID_Entrega',
+        'Observaciones',
+        'Feedback'
     ];
 
     public function alumno()
@@ -25,13 +27,5 @@ class AlumnoEntrega extends Model
     {
         return $this->belongsTo(EntregaCuaderno::class,'ID_Entrega','id');
     }
-    public function nota()
-{
-    return $this->hasOne(
-        NotaCuaderno::class,
-        'ID_Cuaderno',
-        'id'
-    );
-}
 
 }

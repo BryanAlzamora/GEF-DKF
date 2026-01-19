@@ -13,7 +13,6 @@ import EstanciaAlumnoView from '../views/alumno/EstanciaAlumnoView.vue'
 import AlumnoCuadernosView from '@/views/cuadernos/AlumnoCuadernosView.vue';
 import TutorCuadernosView from '@/views/cuadernos/TutorCuadernosView.vue';
 
-import NotasAlumnoView from '@/views/alumno/NotasAlumnoView.vue'
 import AlumnoNotasView from '@/views/alumno/AlumnoNotasView.vue'
 import GradosView from '@/views/GradosView.vue'
 
@@ -54,13 +53,13 @@ const router = createRouter({
       name: 'seguimientoAlumno',
       component: SeguimientoView
     },
-    
+
     {
       path: '/alumnosTutor/asignarEmpresa',
       name: 'asignarEmpresa',
       component: AsignarEmpresaView
     },
-    
+
     {
       path: '/empresa',
       name: 'empresa',
@@ -82,12 +81,6 @@ const router = createRouter({
       component: TutorCuadernosView
     },
     {
-      path: "/instructor/alumnos/:idAlumno/notas",
-      name: "instructor-alumno-notas",
-      component: NotasAlumnoView ,
-      meta: { requiresAuth: true }
-    },
-    {
       path: '/alumno/mis-notas',
       name: "alumno-notas",
       component: AlumnoNotasView ,
@@ -98,7 +91,7 @@ const router = createRouter({
       name: "grados",
       component: GradosView
     }
-    
+
 
 
   ],

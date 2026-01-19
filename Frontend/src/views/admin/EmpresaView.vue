@@ -1,8 +1,8 @@
 <script setup>
     import Navbar from '@/components/Navbar.vue';
     import EmpresasList from '@/components/Empresa/EmpresasList.vue';
-    import EmpresaDatos from '@/components/Empresa/EmpresaDatos.vue';
-    import { ref } from 'vue';
+    import { defineAsyncComponent, ref } from 'vue';
+    const EmpresaDatos = defineAsyncComponent(() => import('@/components/Empresa/EmpresaDatos.vue'))
 
     const empresaSeleccionada = ref(null)
 </script>
