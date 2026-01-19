@@ -15,6 +15,7 @@ class NotaCuadernoController extends Controller
         $request->validate([
             'ID_Cuaderno' => 'required|integer',
             'Observaciones' => 'required|string',
+            'Feedback' => 'required|string'
         ]);
 
         // Actualizar si ya existe o crear si no
@@ -24,6 +25,7 @@ class NotaCuadernoController extends Controller
             ],
             [
                 'Observaciones' => $request->Observaciones,
+                'Feedback' => $request->Feedback,
                 'Fecha' => now()
             ]
         );

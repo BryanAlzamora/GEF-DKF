@@ -13,7 +13,8 @@ class AlumnoEntrega extends Model
         'Fecha_Entrega',
         'ID_Alumno',
         'ID_Entrega',
-        'Observaciones'
+        'Observaciones',
+        'Feedback'
     ];
 
     public function alumno()

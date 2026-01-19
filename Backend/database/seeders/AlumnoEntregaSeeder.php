@@ -16,7 +16,8 @@ class AlumnoEntregaSeeder extends Seeder
                 'Fecha_Entrega' => '2026-01-08',
                 'Observaciones' => 'Buen trabajo. Cuaderno completo y bien estructurado.',
                 'ID_Alumno' => 20001,
-                'ID_Entrega' => 1
+                'ID_Entrega' => 1,
+                'Feedback' => 'Bien',
             ],
             [
                 'id' => 2,
@@ -24,7 +25,8 @@ class AlumnoEntregaSeeder extends Seeder
                 'Fecha_Entrega' => '2026-01-09',
                 'Observaciones' => 'Entrega correcta, aunque falta algo de detalle en las explicaciones.',
                 'ID_Alumno' => 20002,
-                'ID_Entrega' => 1
+                'ID_Entrega' => 1,
+                'Feedback' => 'Regular',
             ],
             [
                 'id' => 3,
@@ -32,7 +34,8 @@ class AlumnoEntregaSeeder extends Seeder
                 'Fecha_Entrega' => '2026-01-09',
                 'Observaciones' => 'Muy buena presentación y contenidos bien justificados.',
                 'ID_Alumno' => 20003,
-                'ID_Entrega' => 1
+                'ID_Entrega' => 1,
+                'Feedback' => 'Bien',
             ],
             [
                 'id' => 4,
@@ -40,7 +43,8 @@ class AlumnoEntregaSeeder extends Seeder
                 'Fecha_Entrega' => '2026-01-08',
                 'Observaciones' => 'Trabajo incompleto. Revisar los ejercicios finales.',
                 'ID_Alumno' => 20004,
-                'ID_Entrega' => 2
+                'ID_Entrega' => 2,
+                'Feedback' => 'Debe mejorar',
             ],
             [
                 'id' => 5,
@@ -48,7 +52,8 @@ class AlumnoEntregaSeeder extends Seeder
                 'Fecha_Entrega' => '2026-01-09',
                 'Observaciones' => 'Buen planteamiento, pero hay errores conceptuales que deben corregirse.',
                 'ID_Alumno' => 20005,
-                'ID_Entrega' => 2
+                'ID_Entrega' => 2,
+                'Feedback' => 'Regular',
             ],
             [
                 'id' => 6,
@@ -56,7 +61,8 @@ class AlumnoEntregaSeeder extends Seeder
                 'Fecha_Entrega' => '2026-01-13',
                 'Observaciones' => 'Se aprecia mejora respecto a la entrega anterior. Sigue así.',
                 'ID_Alumno' => 20001,
-                'ID_Entrega' => 3
+                'ID_Entrega' => 3,
+                'Feedback' => 'Bien',
             ],
         ]);
     }

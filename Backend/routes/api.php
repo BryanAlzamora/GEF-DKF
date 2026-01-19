@@ -8,6 +8,7 @@ use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\AlumnoEntregaController;
 use App\Http\Controllers\EntregaCuadernoController;
 use App\Http\Controllers\EstanciaController;
+use App\Http\Controllers\MatrizController;
 use App\Http\Controllers\NotaCuadernoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotasEmpresaController;
@@ -120,7 +121,10 @@ Route::post('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'store'
 |--------------------------------------------------------------------------
 */
 Route::get('/grados', [GradoController::class, 'getGrados']);
+Route::get('/grados/{id}/asignaturas', [GradoController::class, 'getAsignaturas']);
+Route::get('/grados/{id}/competencias', [GradoController::class, 'getCompetencias']);
 Route::get('/tutor/{id}/notas-cuaderno', [NotaCuadernoController::class, 'notasPorTutor']);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -131,3 +135,7 @@ Route::get('/estancia/{id}/seguimientos', [SeguimientoController::class, 'index'
 Route::post('/seguimiento', [SeguimientoController::class,'crearSeguimiento']);
 Route::put('/seguimiento/{id}', [SeguimientoController::class,'ModificarSeguimiento']);
 Route::delete('/seguimiento/{id}', [SeguimientoController::class,'eliminarSeguimiento']);
+
+
+Route::get('/grado/{id}/matriz-competencias/', [MatrizController::class, 'getCompRa']);
+

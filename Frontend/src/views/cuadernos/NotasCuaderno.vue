@@ -21,7 +21,6 @@ async function fetchNotas() {
       nota_cuaderno: alumno.nota_cuaderno ?? { Nota: null }
     }))
 
-    console.log(alumnos.value);
   } catch (err) {
     console.error(err)
     mensaje.value = 'Error cargando notas'

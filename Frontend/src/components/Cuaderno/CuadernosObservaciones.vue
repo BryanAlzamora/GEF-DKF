@@ -27,25 +27,28 @@ async function fetchEntregas() {
       entregas.value.push(...resResponse.data)
 
     }
-    console.log(entregas.value);
   } catch (err) {
     console.error(err)
     mensaje.value = 'Error cargando entregas'
   }
 }
 
-async function guardarObservacion(alumnoEntrega) {
+async function guardarObservacionYFeedback(alumnoEntrega) {
+  console.log(alumnoEntrega);
   try {
-    const res = await axios.post('http://localhost:8000/api/observacionesCuadernoAlumno', {
+    await axios.post('http://localhost:8000/api/observacionesCuadernoAlumno', {
       ID_Cuaderno: alumnoEntrega.id,
-      Observaciones: alumnoEntrega.Observaciones,
-    })
+      Observaciones: alumnoEntrega.Observaciones ?? '',
+      Feedback: alumnoEntrega.Feedback ?? null,
+    });
 
+    alert('Observaciones y Feedback guardados correctamente');
   } catch (err) {
-    console.error(err)
-    alert('Error al guardar la nota')
+    console.error(err);
+    alert('Error al guardar observaciones y feedback');
   }
 }
+
 
 
 onMounted(fetchEntregas)
@@ -87,6 +90,7 @@ onMounted(fetchEntregas)
                 <tr>
                   <th>Alumno</th>
                   <th class="text-center">PDF</th>
+                  <th class="text-center">Feedback</th>
                   <th class="text-center">Observaciones</th>
                 </tr>
               </thead>
@@ -97,31 +101,39 @@ onMounted(fetchEntregas)
                     {{ alumnoEntrega.alumno?.usuario?.nombre ?? '—' }}
                   </td>
 
-                  <td>
+                  <td class="text-center">
                     <a v-if="alumnoEntrega.URL_Cuaderno"
                       :href="`http://localhost:8000/api/alumno/entregas/descargar/${alumnoEntrega.id}`" target="_blank"
                       class="link-primary">
                       Descargar PDF
                     </a>
-                    <span v-else class="text-danger">
-                      No entregado
-                    </span>
+
                   </td>
 
                   <td class="text-center">
-                    <div class="d-flex justify-content-center gap-2">
-                      <textarea class="form-control" :value="alumnoEntrega.Observaciones ?? ''"
-                        @input="alumnoEntrega.Observaciones = $event.target.value">
-                      </textarea>
-                      <button @click="guardarObservacion(alumnoEntrega)" class="btn btn-outline-secondary btn-sm">
-                        Guardar
-                      </button>
-                    </div>
+                    <select class="form-select" v-model="alumnoEntrega.Feedback">
+                      <option disabled value="">-- Selecciona --</option>
+                      <option>Bien</option>
+                      <option>Regular</option>
+                      <option>Debe mejorar</option>
+                    </select>
                   </td>
+
+                  <td class="text-center d-flex gap-2">
+                    <textarea class="form-control" rows="2" v-model="alumnoEntrega.Observaciones"
+                      placeholder="Escribe tus observaciones...">
+                  </textarea>
+                    <button class="btn btn-outline-secondary btn-sm"
+                      @click="guardarObservacionYFeedback(alumnoEntrega)">
+                      Guardar
+                    </button>
+                  </td>
+
+
                 </tr>
 
                 <tr v-if="entrega.alumno_entrega.length === 0">
-                  <td colspan="3" class="text-center text-muted py-3">
+                  <td colspan="4" class="text-center text-muted py-3">
                     Ningún alumno ha entregado este cuaderno
                   </td>
                 </tr>
