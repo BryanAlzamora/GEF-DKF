@@ -34,7 +34,7 @@ async function cargarAlumnos() {
 }
 
 function seleccionarAlumno(a) {
-  alumnoSeleccionado.value = a
+  alumnoSeleccionado.value = a  
   emit('seleccionarAlumno', a)
 }
 
@@ -64,7 +64,7 @@ onMounted(cargarAlumnos)
           :key="a.ID_Usuario"
           class="list-group-item cursor-pointer"
           :class="{ ' bg-light text-dark': alumnoSeleccionado?.ID_Usuario === a.ID_Usuario }"
-          @click="seleccionarAlumno(a.usuario)"
+          @click="seleccionarAlumno(a)"
         >
           {{ a.usuario?.nombre }} {{ a.usuario?.apellidos }}
         </li>

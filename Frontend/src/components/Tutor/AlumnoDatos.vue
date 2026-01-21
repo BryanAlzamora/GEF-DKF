@@ -8,7 +8,6 @@ import axios from 'axios'
 const props = defineProps({
   alumno: Object
 })
-console.log(props.alumno);
 const router = useRouter()
 const route = useRoute()
 const isTutorView = computed(() => route.name === 'alumnosTutor')
@@ -25,6 +24,7 @@ const notasAlumno = ref({
 watch(
   () => props.alumno,
   async (alumno) => {
+    
     if (!alumno) {
       notasAlumno.value = {
         nota_cuaderno: [],
@@ -42,13 +42,15 @@ watch(
       )
 
       const data = res.data
+      
       notasAlumno.value = {
         nota_cuaderno: data?.nota_cuaderno || [],
         notas_competencias: data?.notas_competencias || [],
         notas_transversales: data?.notas_transversales || [],
         notas_egibide: data?.notas_egibide || []
       }
-
+      console.log(notasAlumno.value);
+      
     } catch (e) {
       console.error('Error cargando notas', e)
       notasAlumno.value = {
@@ -68,18 +70,18 @@ watch(
   <div v-if="alumno" class="col-md-9 mt-3">
     <div class="card shadow-sm mt-3">
       <div class="card-header bg-indigo text-white">
-        <h5 class="mb-0">{{ alumno?.Nombre }} {{ alumno?.Apellidos }}</h5>
+        <h5 class="mb-0">{{ alumno?.usuario.nombre }} {{ alumno?.usuario.apellidos }}</h5>
       </div>
 
       <div class="card-body">
-        <p><strong>Email:</strong> {{ alumno?.Email || 'N/A' }}</p>
-        <p><strong>Grado:</strong> {{ alumno?.Grado || 'N/A' }}</p>
+        <p><strong>Email:</strong> {{ alumno?.usuario.email || 'N/A' }}</p>
+        <p><strong>Grado:</strong> {{ alumno?.grado.nombre || 'N/A' }}</p>
 
         <div class="d-flex gap-2 mt-3" v-if="isTutorView">
           <button
-            v-if="alumno?.estancia_id"
+            v-if="alumno?.estancia_actual?.id"
             class="btn btn-primary"
-            @click="router.push(`/tutor/seguimiento/${alumno.estancia_id}`)"
+            @click="router.push(`/tutor/seguimiento/${alumno?.estancia_actual?.id}`)"
           >
             <i class="bi bi-bar-chart-line"></i> Seguimiento
           </button>
@@ -95,7 +97,7 @@ watch(
 
         <!-- Notas -->
         <NotasAlumno
-        v-if="alumno && alumno?.estancia_id"
+        v-if="alumno && alumno?.estancia_actual?.id"
         :alumno="alumno"
         :notas="notasAlumno"
         />
