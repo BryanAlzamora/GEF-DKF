@@ -15,6 +15,7 @@ use App\Http\Controllers\NotasEmpresaController;
 use App\Http\Controllers\SeguimientoController;
 use App\Http\Controllers\AsignaturaController;
 use App\Http\Controllers\RaController;
+use App\Http\Controllers\CompetenciaController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -72,7 +73,6 @@ Route::get('/grados', [GradoController::class, 'getGrados']);
 Route::get('/alumno/entregas/descargar/{id}', [AlumnoEntregaController::class, 'descargarCuaderno']);
 
 
-Route::get('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'misNotas'])->middleware('auth:sanctum');
 Route::post('/alumnos/{idAlumno}/notas', [NotasEmpresaController::class, 'store'])->middleware('auth:sanctum');
 
 Route::get('/tutor/{id}/grados', [TutorController::class, 'grados']);
@@ -152,6 +152,8 @@ Route::post('/ras', [RaController::class, 'store']);
 Route::delete('/ras/{id}', [RaController::class, 'destroy']); 
 Route::post('/asignaturas', [AsignaturaController::class, 'store']);      
 Route::delete('/asignaturas/{id}', [AsignaturaController::class, 'destroy']);
+Route::post('/competencias',[CompetenciaController::class, 'store']);
+Route::delete('/competencias/{id}', [CompetenciaController::class, 'destroy']);
 
 Route::get('/grado/{id}/matriz-competencias/', [CompRaController::class, 'getCompRa']);
 Route::post('compRa/create',[CompRaController::class,'createOrDelete']);

@@ -1,19 +1,24 @@
 <script setup>
-    import { useRoute } from "vue-router";
-    import AlumnosList from "../../components/AlumnosList.vue";
+import { ref } from 'vue'
+import Navbar from '@/components/Navbar.vue'
+import AlumnosList from '@/components/AlumnosList.vue'
+import AlumnoDatos from '@/components/Tutor/AlumnoDatos.vue'
+import { useRoute } from 'vue-router'
 
+const alumnoSeleccionado = ref(null)
 const route = useRoute();
-const tutorId = route.params.id;    
+
+const tutorId = route.params.id;
+
 </script>
+
 <template>
-     <AlumnosList
-    :endpoint="`http://127.0.0.1:8000/api/tutores/${tutorId}/alumnos`"
-    title="Tus Alumnos"
-  />
-     <!-- <template #actions="{ alumno }">
-    <button class="btn btn-sm btn-primary me-2" @click="verDetalle(alumno)">
-      Ver
-    </button>
-  </template>
-  </AlumnosList> -->
+  <Navbar />
+
+  <div class="container-fluid">
+    <div class="row">
+      <AlumnosList @seleccionarAlumno="alumnoSeleccionado = $event" :endpoint="`http://localhost:8000/api/tutores/${tutorId}/alumnos`" />
+      <AlumnoDatos :alumno="alumnoSeleccionado" />
+    </div>
+  </div>
 </template>
