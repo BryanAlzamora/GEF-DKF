@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             EstanciaAlumnoSeeder::class,
             HorarioSeeder::class,
             SeguimientoSeeder::class,
+            CompEstanciaSeeder::class,
         ]);
 
     }

@@ -58,7 +58,7 @@ const router = createRouter({
       name: 'seguimiento',
       component: SeguimientoView,
       props: true
-    },  
+    },
 
     {
       path: '/empresa',
@@ -96,7 +96,7 @@ const router = createRouter({
       name: "compra",
       component: CompRaView
     }
-  
+
   ],
 })
 

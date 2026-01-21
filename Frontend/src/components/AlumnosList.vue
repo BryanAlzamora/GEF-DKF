@@ -108,7 +108,6 @@ onMounted(() => fetchAlumnos(1));
 </script>
 
 <template>
-  <Navbar />
 
   <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -220,7 +219,7 @@ onMounted(() => fetchAlumnos(1));
       :show="showFormEstanciaModal"
       @close="showFormEstanciaModal = false"
     />
-    
+
     <NotasAlumnoModal
       :alumno="alumnoSeleccionado"
       :notas="notasAlumno"

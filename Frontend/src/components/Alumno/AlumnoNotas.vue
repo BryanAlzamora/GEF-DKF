@@ -43,7 +43,7 @@ onMounted(cargarNotas)
         <p class="mb-0"><strong>Grado:</strong> {{ notas.grado.nombre }}</p>
       </div>
 
-      <CuardernosTable :cuadernos="notas.cuadernos" :alumno-id="id" />
+      <CuardernosTable :notaCuaderno="notas.nota_cuaderno" :alumno-id="id" />
       <CompetenciasTable :competencias="notas.notas_competencias" />
       <TransversalesTable :transversales="notas.notas_transversales" />
       <EgibideTable :egibide="notas.notas_egibide" />
