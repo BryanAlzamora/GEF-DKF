@@ -103,8 +103,12 @@ const claseRol = (tipo) => {
           </div>
         </RouterLink>
       </div>
-      <div v-if="isTutorGrado">
-        
+      <div v-if="isTutorGrado" class="col-12 col-md-6 col-lg-4 ">
+        <RouterLink to="/mi-grado">
+          <div class="card h-100 border-0 shadow hover-scale overflow-hidden">
+            <img src="../../public/images/MiGrado.png" alt="Imagen de Mi Grado tutor" class="card-img-top w-100 h-100 object-fit-cover">
+          </div>
+        </RouterLink>
       </div>
 
     </div>

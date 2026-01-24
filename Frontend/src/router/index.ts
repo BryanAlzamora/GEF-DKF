@@ -11,11 +11,10 @@ import EstanciaAlumnoView from '../views/alumno/EstanciaAlumnoView.vue'
 import MiGradoView from '@/views/tutor/MiGradoView.vue'
 import AlumnoCuadernosView from '@/views/cuadernos/AlumnoCuadernosView.vue';
 import TutorCuadernosView from '@/views/cuadernos/TutorCuadernosView.vue';
-
 import AlumnoNotasView from '@/views/alumno/AlumnoNotasView.vue'
 import CompRaView from '@/views/CompRaView.vue'
 import GradosView from '@/views/GradosView.vue'
-
+import CambiarContrasenaView from '@/views/CambiarContrasenaView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -100,7 +99,14 @@ const router = createRouter({
     path: "/mi-grado",
     name: "miGrado",
     component: MiGradoView
-  }
+    },
+    {
+      path: '/cambiar-contrasena',
+    name: 'cambiar-contrasena',
+    component: CambiarContrasenaView,
+    meta: { requireAuth: true }
+    }
+
 
   ],
 })

@@ -73,71 +73,69 @@ protected $notasService;
         if (!$grado) return response()->json(['message' => 'Sin grado asignado'], 404);
 
         // 2. Obtener Asignaturas del Grado
-        // Necesitamos los modelos (Eloquent) para pasarlos al servicio, no el Query Builder
         $asignaturas = Asignatura::where('ID_Grado', $grado->id)->get();
 
-        // 3. Obtener Alumnos matriculados en ese grado
-        $alumnos = User::where('tipo', 'alumno')
+        // 3. Parámetros de paginación
+        $perPage = $request->input('per_page', 5);
+        $page = $request->input('page', 1);
+
+        // 4. Obtener Alumnos matriculados en ese grado CON PAGINACIÓN
+        $alumnosQuery = User::where('tipo', 'alumno')
             ->whereHas('alumno', function($q) use ($grado) {
                 $q->where('ID_Grado', $grado->id);
             })
-            ->with('alumno') // Cargamos la relación para acceder a sus IDs
-            ->orderBy('apellidos', 'asc')
-            ->get();
+            ->with('alumno')
+            ->orderBy('apellidos', 'asc');
 
-        // 4. CALCULAR NOTAS PARA CADA ALUMNO
-        $alumnos = $alumnos->map(function ($usuarioAlumno) use ($asignaturas) {
+        // Aplicar paginación
+        $alumnosPaginados = $alumnosQuery->paginate($perPage, ['*'], 'page', $page);
+
+        // 5. CALCULAR NOTAS PARA CADA ALUMNO
+        $alumnosConNotas = $alumnosPaginados->getCollection()->map(function ($usuarioAlumno) use ($asignaturas) {
             
-            // IMPORTANTE: Según tus migraciones, la FK es 'id_usuario' en la tabla alumno
-            $idAlumno = $usuarioAlumno->alumno->ID_Usuario; 
+            $idAlumno = $usuarioAlumno->id;
 
             // A. Notas Globales
             $notaCuaderno    = $this->notasService->obtenerNotaCuaderno($idAlumno);
             $notaTransversal = $this->notasService->obtenerNotaTransversal($idAlumno);
 
-            // B. Notas Técnicas por asignatura (Calcula medias de RAs)
-            // Devuelve: [ID_Asig => NotaTecnica]
+            // B. Notas Técnicas por asignatura
             $notasTecnicas   = $this->notasService->obtenerNotaTecnicaPorAsignatura($idAlumno, $asignaturas);
 
-            // C. Notas de Empresa (Aplica la fórmula 20% + 20% + 60%)
-            // Devuelve: [ID_Asig => NotaEmpresa]
+            // C. Notas de Empresa
             $notasEmpresa    = $this->notasService->calcularNotaFinalEmpresa($notaCuaderno, $notaTransversal, $notasTecnicas);
 
-            // D. Notas de Egibide (Del tutor)
-            // Devuelve: [ID_Asig => NotaEgibide]
+            // D. Notas de Egibide
             $notasEgibide    = $this->notasService->obtenerNotasEgibide($idAlumno);
 
-            // E. NOTA FINAL ABSOLUTA (20% Empresa + 80% Egibide)
+            // E. NOTA FINAL ABSOLUTA
             $notasFinales    = $this->notasService->calcularNotasFinalesPorAsignatura($notasEmpresa, $notasEgibide);
 
-            // F. Empaquetar todo en un formato fácil para Vue
-            // Creamos un array donde la clave es el ID de la asignatura
+            // F. Empaquetar notas
             $packNotas = [];
             foreach ($asignaturas as $asig) {
                 $id = $asig->id;
                 $packNotas[$id] = [
-                    'cuaderno'    => $notaCuaderno,    // Igual para todas
-                    'transversal' => $notaTransversal, // Igual para todas
-                    
-                    // Usamos null coalescing (??) por si no existe la clave
+                    'cuaderno'    => $notaCuaderno,
+                    'transversal' => $notaTransversal,
                     'tecnica'     => $notasTecnicas[$id] ?? '-', 
                     'egibide'     => $notasEgibide[$id] ?? '-',
-                    
-                    // Totales
                     'nota_empresa_calculada' => $notasEmpresa[$id] ?? '-',
                     'final'       => $notasFinales[$id] ?? '-'
                 ];
             }
 
-            // Inyectamos el paquete de notas en el objeto alumno
             $usuarioAlumno->notas_calculadas = $packNotas;
 
             return $usuarioAlumno;
         });
 
+        // Reemplazar la colección con la versión procesada
+        $alumnosPaginados->setCollection($alumnosConNotas);
+
         return response()->json([
             'grado' => $grado,
-            'alumnos' => $alumnos,
+            'alumnos' => $alumnosPaginados,
             'asignaturas' => $asignaturas
         ]);
     }

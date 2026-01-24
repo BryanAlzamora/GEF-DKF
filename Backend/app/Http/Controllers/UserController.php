@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -165,4 +167,33 @@ private function checkEsTutor($user) {
             'usuario' => $user,
         ], 201);
     }
+
+   public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed', 
+        ]);
+
+        $user = $request->user();
+
+        // 1. Verificar que la contraseña actual sea correcta
+        // Usamos Hash::check para comparar texto plano con el hash guardado
+        if (!Hash::check($request->current_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['La contraseña actual es incorrecta.'],
+            ]);
+        }
+
+        // 2. Actualizar la contraseña usando el helper bcrypt()
+        $user->update([
+            'password' => bcrypt($request->new_password)
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Contraseña actualizada correctamente'
+        ]);
+    }
+
 }

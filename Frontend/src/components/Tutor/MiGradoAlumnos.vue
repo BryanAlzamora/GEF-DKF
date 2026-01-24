@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import api from "@/services/api.js"
 
 // Estados
@@ -7,6 +7,11 @@ const alumnos = ref([]);
 const asignaturas = ref([]);
 const gradoNombre = ref("");
 const loading = ref(false);
+
+// Paginación
+const currentPage = ref(1);
+const totalPages = ref(1);
+const perPage = ref(5);
 
 // Control del acordeón
 const alumnoDesplegado = ref(null);
@@ -16,17 +21,29 @@ const toggleNotas = (idAlumno) => {
 };
 
 // Cargar datos del tutor
-const fetchDatosGrado = async () => {
+const fetchDatosGrado = async (page = 1) => {
   loading.value = true;
+  currentPage.value = page;
+  
   try {
     const token = localStorage.getItem('token');
     const res = await api.get("/api/mi-grado/gestion", {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
+      params: {
+        page: page,
+        per_page: perPage.value
+      }
     });
     
-    alumnos.value = res.data.alumnos;
+    // Los datos vienen paginados del backend
+    alumnos.value = res.data.alumnos.data;
+    totalPages.value = res.data.alumnos.last_page;
+    
     asignaturas.value = res.data.asignaturas;
     gradoNombre.value = res.data.grado.nombre;
+
+    // Cerrar acordeón al cambiar de página
+    alumnoDesplegado.value = null;
 
   } catch (error) {
     console.error("Error cargando datos:", error);
@@ -82,21 +99,21 @@ const obtenerEstadoAlumno = (alumno) => {
   if (errores.length === 0) {
     return { 
       tipo: 'completo', 
-      mensaje: `Todas las asignaturas calculadas (${totalAsignaturas}/${totalAsignaturas})`, 
+      mensaje: `✓ Todas (${totalAsignaturas}/${totalAsignaturas})`, 
       icono: 'bi-check-circle-fill',
       errores: []
     };
   } else if (asignaturasCompletas > 0) {
     return { 
       tipo: 'parcial', 
-      mensaje: `Calculadas: ${asignaturasCompletas}/${totalAsignaturas}`, 
+      mensaje: `⚠ ${asignaturasCompletas}/${totalAsignaturas}`, 
       icono: 'bi-exclamation-triangle-fill',
       errores: errores
     };
   } else {
     return { 
       tipo: 'incompleto', 
-      mensaje: `Ninguna asignatura calculada`, 
+      mensaje: `✗ 0/${totalAsignaturas}`, 
       icono: 'bi-x-circle-fill',
       errores: errores
     };
@@ -114,12 +131,13 @@ const getBadgeClass = (tipo) => {
 };
 
 onMounted(() => {
-  fetchDatosGrado();
+  fetchDatosGrado(1);
 });
 </script>
 
 <template>
-  <div class="card shadow-sm border-0">
+  <div class="d-flex justify-content-center">
+  <div class="card shadow-sm border-0 mt-5 col-lg-8 justify-content-center">
     <div class="card-header bg-indigo text-white py-3">
       <h5 class="mb-0">
         <i class="bi bi-mortarboard-fill me-2"></i>
@@ -138,8 +156,6 @@ onMounted(() => {
           <thead class="table-light">
             <tr>
               <th class="ps-4">Apellidos y Nombre</th>
-              <th>Email</th>
-              <th>Teléfono</th>
               <th>Estado Notas</th>
               <th class="text-end pe-4">Acciones</th>
             </tr>
@@ -150,8 +166,6 @@ onMounted(() => {
                 <td class="ps-4 fw-bold text-secondary">
                   {{ alumno.apellidos }}, {{ alumno.nombre }}
                 </td>
-                <td>{{ alumno.email }}</td>
-                <td>{{ alumno.n_tel || '-' }}</td>
                 <td>
                   <span 
                     class="badge" 
@@ -265,7 +279,37 @@ onMounted(() => {
           </tbody>
         </table>
       </div>
+
+      <!-- PAGINACIÓN -->
+      <div v-if="totalPages > 1" class="card-footer bg-white border-top">
+        <nav>
+          <ul class="pagination mb-0 justify-content-center">
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+              <button class="page-link" @click="fetchDatosGrado(currentPage - 1)" :disabled="currentPage === 1">
+                <i class="bi bi-chevron-left"></i> Anterior
+              </button>
+            </li>
+
+            <li
+              class="page-item"
+              v-for="page in totalPages"
+              :key="page"
+              :class="{ active: currentPage === page }"
+            >
+              <button class="page-link" @click="fetchDatosGrado(page)">{{ page }}</button>
+            </li>
+
+            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+              <button class="page-link" @click="fetchDatosGrado(currentPage + 1)" :disabled="currentPage === totalPages">
+                Siguiente <i class="bi bi-chevron-right"></i>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
     </div>
+  </div>
   </div>
 </template>
 
@@ -290,5 +334,33 @@ onMounted(() => {
   padding: 0.5rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 500;
+}
+
+.pagination {
+  margin: 0;
+}
+
+.page-link {
+  color: #6f42c1;
+  border-color: #dee2e6;
+}
+
+.page-link:hover {
+  color: #5a32a3;
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+  background-color: #6f42c1;
+  border-color: #6f42c1;
+  color: white;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #fff;
+  border-color: #dee2e6;
 }
 </style>

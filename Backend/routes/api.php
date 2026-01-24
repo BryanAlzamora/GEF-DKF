@@ -32,7 +32,7 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
 Route::get('/auth', [UserController::class, 'auth'])->middleware('auth:sanctum');
 Route::get('/users', [UserController::class, 'getUsers']);
 Route::post('/user/create', [UserController::class, 'create']);
-
+Route::post('/change-password', [UserController::class, 'changePassword'])->middleware('auth:sanctum');
 /*
 |--------------------------------------------------------------------------
 | Empresas

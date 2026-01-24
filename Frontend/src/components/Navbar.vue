@@ -23,9 +23,8 @@
 
       <!-- Offcanvas -->
       <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
-
         <div class="offcanvas-header">
-                  <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Menú</h5>
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Menú</h5>
 
           <button
             type="button"
@@ -59,7 +58,9 @@
                     <RouterLink to="/users">Usuarios</RouterLink>
                   </a>
                   <a class="dropdown-item">
-                    <RouterLink to="/competenciasXra">Competencias y RAs</RouterLink>
+                    <RouterLink to="/competenciasXra"
+                      >Competencias y RAs</RouterLink
+                    >
                   </a>
                   <a class="dropdown-item">
                     <RouterLink to="/grados">Grados y Asignaturas</RouterLink>
@@ -91,15 +92,19 @@
                   </RouterLink>
                 </li>
 
-                 <li>
-                    <RouterLink class="dropdown-item" to="/cuadernos-tutor">
-                      Cuadernos
-                    </RouterLink>
-                  </li>
-                  <li v-if="usuario.es_tutor"> 
-                   <hr class="dropdown-divider"> <RouterLink class="dropdown-item fw-bold text-indigo" to="/mi-grado">
-                     <i class="bi bi-mortarboard-fill me-1"></i> Mi Grado
-                   </RouterLink>
+                <li>
+                  <RouterLink class="dropdown-item" to="/cuadernos-tutor">
+                    Cuadernos
+                  </RouterLink>
+                </li>
+                <li v-if="usuario.es_tutor">
+                  <hr class="dropdown-divider" />
+                  <RouterLink
+                    class="dropdown-item fw-bold text-indigo"
+                    to="/mi-grado"
+                  >
+                    <i class="bi bi-mortarboard-fill me-1"></i> Mi Grado
+                  </RouterLink>
                 </li>
               </ul>
             </li>
@@ -112,30 +117,52 @@
                 Alumnos
               </RouterLink>
             </li>
-            <li class="nav-item" v-if="usuario.tipo ==='alumno'">
+            <li class="nav-item" v-if="usuario.tipo === 'alumno'">
               <RouterLink
                 class="nav-link"
                 :to="`/alumno/${usuario.id}/estancia`"
               >
-              Estancia
+                Estancia
               </RouterLink>
             </li>
 
-             <li class="nav-item" v-if="usuario.tipo === 'alumno'">
+            <li class="nav-item" v-if="usuario.tipo === 'alumno'">
               <RouterLink class="nav-link" to="/cuadernos-alumno">
                 Mis Cuadernos
               </RouterLink>
             </li>
-            <li v-if="usuario.tipo ==='alumno'">
+            <li v-if="usuario.tipo === 'alumno'">
               <RouterLink class="nav-link" to="/alumno/mis-notas">
                 Mis Notas
               </RouterLink>
             </li>
-            <li class="nav-item">
-              <a class="nav-link text-danger" role="button" @click="logout">
-                Cerrar sesión
-              </a>
-            </li>
+           <li class="nav-item dropdown">
+  <a
+    class="nav-link dropdown-toggle"
+    href="#"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    <i class="bi bi-person-circle me-1"></i> {{ usuario.nombre || 'Mi Cuenta' }}
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end">
+    
+    <li>
+      <RouterLink class="dropdown-item" to="/cambiar-contrasena">
+        <i class="bi bi-key me-2"></i> Cambiar Contraseña
+      </RouterLink>
+    </li>
+    
+    <li><hr class="dropdown-divider"></li>
+    
+    <li>
+      <button class="dropdown-item text-danger" @click="logout">
+        <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+      </button>
+    </li>
+  </ul>
+</li>
           </ul>
         </div>
       </div>
@@ -153,6 +180,15 @@ a {
   text-decoration: none;
   color: black;
 }
+.nav-link {
+    font-size: 1.2rem; 
+    font-weight: 500;   
+}
+
+
+.dropdown-item {
+    font-size: 1.1rem; 
+}
 </style>
 
 <script setup>
@@ -162,31 +198,32 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 const router = useRouter();
-const userStore = useUserStore()
-import api from '@/services/api.js'
+const userStore = useUserStore();
+import api from "@/services/api.js";
 
-let message = ref()
-let usuario = userStore.user
+let message = ref();
+let usuario = userStore.user;
 async function logout() {
-    const token = localStorage.getItem('token')
-    try {
-        const response = await api.post('/api/logout', {}, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        if (response.data.status === 'success') {
-            localStorage.removeItem('token');
-            delete axios.defaults.headers.common['Authorization'];
-            userStore.user.value = null
-            router.push('/');
-        }
-    } catch (error) {
-        console.error(error);
-        message.value = 'Error cerrando sesión';
+  const token = localStorage.getItem("token");
+  try {
+    const response = await api.post(
+      "/api/logout",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.data.status === "success") {
+      localStorage.removeItem("token");
+      delete axios.defaults.headers.common["Authorization"];
+      userStore.user.value = null;
+      router.push("/");
     }
+  } catch (error) {
+    console.error(error);
+    message.value = "Error cerrando sesión";
   }
-
+}
 </script>
-
-
