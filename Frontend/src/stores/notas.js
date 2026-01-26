@@ -7,7 +7,7 @@ export const useNotasStore = defineStore("notas", () => {
   const gradoNombre = ref("");
 
   const setDatosGrado = ({ alumnosData, asignaturasData, grado }) => {
-    alumnos.value = alumnosData;          // ¡Esto debe ser el array de alumnos!
+    alumnos.value = alumnosData;          
     asignaturas.value = asignaturasData;
     gradoNombre.value = grado.nombre;
   };

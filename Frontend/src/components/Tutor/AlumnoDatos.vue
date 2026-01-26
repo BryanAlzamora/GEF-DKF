@@ -39,8 +39,8 @@ async function instructorAsignado() {
   try {
     const token = localStorage.getItem('token')
     const res = await api.get(
-      `/api/alumno/${props.alumno.ID_Usuario}/mis-notas`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      `/api/alumno/${props.alumno.ID_Usuario}/mis-notas`
+      
     )
     
     // Actualizar el instructor en el objeto alumno
@@ -76,9 +76,7 @@ async function confirmarEliminarEstancia(confirmado) {
 async function eliminarEstancia(estanciaId) {
   try {
     const token = localStorage.getItem('token')
-    await api.delete(`/api/estancia/${estanciaId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    await api.delete(`/api/estancia/${estanciaId}`)
     console.log('Estancia eliminada correctamente')
     
     // Limpiar la estancia del alumno para que baje a la tabla de sin estancia
@@ -113,8 +111,7 @@ watch(
     try {
       const token = localStorage.getItem('token')
       const res = await api.get(
-        `/api/alumno/${alumno.ID_Usuario}/mis-notas`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `/api/alumno/${alumno.ID_Usuario}/mis-notas`
       )
 
       const data = res.data

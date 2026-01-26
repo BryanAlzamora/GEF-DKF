@@ -28,8 +28,7 @@ async function cargarSeguimientos() {
 
   try {
     const res = await api.get(
-      `/api/estancia/${props.estanciaId}/seguimientos`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      `/api/estancia/${props.estanciaId}/seguimientos`
     )
     seguimientos.value = res.data
   } catch (err) {
@@ -68,8 +67,7 @@ async function guardarNuevoSeguimiento(data) {
   try {
     const res = await api.post(
       `/api/seguimiento`,
-      { ...data, ID_Estancia: props.estanciaId },
-      { headers: { Authorization: `Bearer ${token}` } }
+      { ...data, ID_Estancia: props.estanciaId }
     )
     seguimientos.value.unshift(res.data)
     crearModalVisible.value = false
@@ -89,8 +87,7 @@ async function guardarEdicionSeguimiento(data) {
   try {
     const res = await api.put(
       `/api/seguimiento/${data.id}`,
-      data,
-      { headers: { Authorization: `Bearer ${token}` } }
+      data
     )
     const i = seguimientos.value.findIndex(s => s.id === data.id)
     if (i !== -1) seguimientos.value[i] = res.data
@@ -111,8 +108,7 @@ async function eliminarSeguimiento(id) {
 
   const token = localStorage.getItem('token')
   try {
-    const res = await api.delete(`/api/seguimiento/${id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+    const res = await api.delete(`/api/seguimiento/${id}`
     )
     seguimientos.value = seguimientos.value.filter(s => (s.id) !== id)
     console.log(res.data);
