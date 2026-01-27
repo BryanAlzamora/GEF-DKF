@@ -6,13 +6,13 @@
     </h2>
 
     <div class="mb-4 col-12 col-md-4">
-     <BuscadorSelect 
-        v-model="gradoSeleccionado" 
-        :options="grados" 
-        label-key="nombre" 
+     <BuscadorSelect
+        v-model="gradoSeleccionado"
+        :options="grados"
+        label-key="nombre"
         value-key="id"
-        placeholder="Buscar grado..." 
-        @change="cargarMatriz" 
+        placeholder="Buscar grado..."
+        @change="cargarMatriz"
       />
     </div>
 
@@ -74,7 +74,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import api from '@/services/api.js'
 import BuscadorSelect from '@/components/BuscadorSelect.vue'
 

@@ -51,10 +51,11 @@ Route::middleware('auth:sanctum')->group(function () {
 | Instructores
 |--------------------------------------------------------------------------
 */
-    Route::get('/empresa/{cif}/instructores', [InstructorController::class, 'getCompanyInstructor']);
-    Route::post('/empresa/instructor/create', [InstructorController::class, 'crearInstructor']);
-    Route::get('/instructores/{id}/alumnos', [AlumnoController::class, 'alumnosDeInstructor']);
-    Route::put('/alumnos/{idAlumno}/asignar-instructor', [AlumnoController::class, 'asignarInstructor']);
+
+Route::get('/empresa/{cif}/instructores', [InstructorController::class, 'getCompanyInstructor']);
+Route::post('/empresa/instructor/create', [InstructorController::class, 'crearInstructor']);
+Route::get('/instructores/{id}/alumnos', [AlumnoController::class, 'alumnosDeInstructor'])->middleware('auth:sanctum');
+Route::put('/alumnos/{idAlumno}/asignar-instructor', [AlumnoController::class, 'asignarInstructor'])->middleware('auth:sanctum');
 
 
 

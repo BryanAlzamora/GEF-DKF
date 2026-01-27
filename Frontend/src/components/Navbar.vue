@@ -143,7 +143,6 @@ a {
 
 <script setup>
 import { useUserStore } from "@/stores/userStore";
-import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
@@ -161,7 +160,7 @@ async function logout() {
     );
     if (response.data.status === "success") {
       localStorage.removeItem("token");
-      delete axios.defaults.headers.common["Authorization"];
+      delete api.defaults.headers.common["Authorization"];
       userStore.user.value = null;
       router.push("/");
     }

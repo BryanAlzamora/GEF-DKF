@@ -22,7 +22,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 const email = ref('');
@@ -44,7 +43,7 @@ const login = async () => {
       localStorage.setItem('token', token);
       localStorage.setItem('user',response.data.user.id)
 
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
       router.push('/home');
     } else {
       errorMessage.value = response.data.message;

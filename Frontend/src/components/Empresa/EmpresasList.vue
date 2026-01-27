@@ -5,7 +5,7 @@
         </button>
 
         <Buscador :tipo="'Buscar Empresa'" @search="onSearch"></Buscador>
-        
+
         <EmpresaForm :show="mostrarModal" :errorMessage="errores" @close="mostrarModal = false" @crear="crearEmpresa" />
 
         <ul v-if="empresas.length" class="list-group mt-3">
@@ -15,7 +15,7 @@
             </button>
 
             <button v-for="empresa in empresas" :key="empresa.id" type="button"
-                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" 
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                 @click="emit('seleccionarEmpresa', empresa)">
                 {{ empresa.Nombre }}
                 <small class="text-muted">{{ empresa.CIF }}</small>
@@ -36,7 +36,7 @@
                 <li class="page-item" :class="{ disabled: currentPage === 1 }">
                     <button class="page-link" @click="cargarEmpresas(currentPage - 1)">&laquo;</button>
                 </li>
-                
+
                 <li v-for="page in totalPages" :key="page" class="page-item" :class="{ active: currentPage === page }">
                     <button class="page-link" @click="cargarEmpresas(page)">{{ page }}</button>
                 </li>
@@ -50,7 +50,6 @@
 </template>
 
 <script setup>
-import axios from 'axios'
 import { ref, onMounted, watch } from 'vue'
 import EmpresaForm from './EmpresaForm.vue'
 import Buscador from "../Buscador.vue";
@@ -124,7 +123,7 @@ function onSearch(texto) {
 
 watch(q, () => {
     if (searchTimeout) clearTimeout(searchTimeout)
-    
+
     // Esperar un poco para no saturar al servidor
     searchTimeout = setTimeout(() => {
         // Al buscar, siempre volvemos a la página 1

@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios";
 import { useUserStore } from '@/stores/userStore';
 import EstanciaDatos from './EstanciaDatos.vue';
 import EstanciaHorario from './EstanciaHorario.vue';

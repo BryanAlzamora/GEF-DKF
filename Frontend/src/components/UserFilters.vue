@@ -1,5 +1,4 @@
 <script setup>
-import axios from "axios";
 import { ref, watch, onMounted } from "vue";
 import UserCreationButtons from "./UserCreationButtons.vue";
 import api from "@/services/api.js";

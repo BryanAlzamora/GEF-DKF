@@ -1,6 +1,5 @@
 <script setup>
 import { ref, watch } from "vue";
-import axios from "axios";
 import FormularioCrear from "@/components/FormularioCrear.vue";
 import ConfirmarEliminar from '../ConfirmarEliminar.vue'; // <--- IMPORTAMOS
 import api from '@/services/api.js'
@@ -110,7 +109,7 @@ async function eliminarCompetencia(id) {
     </div>
     <FormularioCrear
       v-if="mostrarForm"
-      endpoint="http://127.0.0.1:8000/api/competencias"
+      endpoint="/api/competencias"
       tipo="comp"
       :idPadre="grado.id"
       @cancelar="mostrarForm = false"

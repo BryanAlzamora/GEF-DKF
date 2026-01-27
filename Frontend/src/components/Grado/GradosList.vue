@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, defineEmits } from "vue";
-import axios from "axios";
 import Buscador from "../Buscador.vue";
 import CrearGradoModal from "./CrearGradoModal.vue";
 import TransversalModal from "@/components/Grado/TranversalModal.vue";
@@ -74,15 +73,15 @@ async function confirmarEliminar(confirmado) {
 
 async function eliminarGrado(id) {
   try {
-    
+
     await api.delete(`/api/grados/${id}`);
-    
+
     console.log('Grado eliminado correctamente');
-    
+
     // Limpiar la selección si el grado eliminado era el seleccionado
     emit('verAsignaturas', null);
     emit('verCompetencias', null);
-    
+
     fetchGrados(currentPage.value); // Recargar la página actual
   } catch (err) {
     console.error('Error al eliminar grado:', err);
@@ -123,8 +122,8 @@ onMounted(() => {
                 <h5 class="mb-1 text-break">{{ grado.nombre }}</h5>
                 <div class="d-flex gap-2 align-items-start">
                     <small class="badge bg-secondary">{{ grado.curso }}</small>
-                    <button 
-                        class="btn btn-sm btn-danger p-1" 
+                    <button
+                        class="btn btn-sm btn-danger p-1"
                         style="line-height: 1;"
                         @click.stop="abrirEliminarModal(grado)"
                         title="Eliminar grado"

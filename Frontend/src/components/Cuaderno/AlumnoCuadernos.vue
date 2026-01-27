@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
 import api from '@/services/api.js'
 
@@ -131,7 +130,7 @@ onMounted(fetchEntregas)
             <!-- Descargar última entrega -->
             <div v-if="entrega.alumno_entrega?.length">
               <a
-  :href="`http://localhost:8000/api/alumno/entregas/descargar/${entrega.alumno_entrega[entrega.alumno_entrega.length - 1].id}`"
+  :href="`/api/alumno/entregas/descargar/${entrega.alumno_entrega[entrega.alumno_entrega.length - 1].id}`"
   target="_blank"
   class="btn btn-outline-indigo btn-sm"
 >

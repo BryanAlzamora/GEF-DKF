@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import axios from 'axios'
 import CrearSeguimientoModal from './CrearSeguimientoModal.vue'
 import EditarSeguimientoModal from './EditarSeguimientoModal.vue'
 import ConfirmarEliminar from '../ConfirmarEliminar.vue'
@@ -23,7 +22,7 @@ const seguimientoEliminar = ref(null)
 
 // Cargar seguimientos
 async function cargarSeguimientos() {
-  
+
   if (!props.estanciaId) return
 
   try {
@@ -63,7 +62,7 @@ function confirmarEliminar(confirmado) {
 
 // Guardar seguimiento (crear)
 async function guardarNuevoSeguimiento(data) {
-  
+
   try {
     const res = await api.post(
       `/api/seguimiento`,
@@ -83,7 +82,7 @@ async function guardarEdicionSeguimiento(data) {
     alert('No se puede editar: falta ID')
     return
   }
-  
+
   try {
     const res = await api.put(
       `/api/seguimiento/${data.id}`,
@@ -106,7 +105,7 @@ async function eliminarSeguimiento(id) {
     return
   }
 
-  
+
   try {
     const res = await api.delete(`/api/seguimiento/${id}`
     )
